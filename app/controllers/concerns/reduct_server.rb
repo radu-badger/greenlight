@@ -60,8 +60,12 @@ module ReductServer
       twilio_create_options = {
         record_participants_on_connect: options[:meeting_recorded].to_s,
         type: 'group-small',
-        unique_name: room.uid
+        unique_name: room.uid,
+        status_callback: room_record_hook_url(@room),
+        status_callback_method: 'POST'
       }
+
+      logger.info("Created room with options: #{twilio_create_options}")
 
       # Send the create request.
       meeting = twilio_client.video.rooms.create(twilio_create_options)

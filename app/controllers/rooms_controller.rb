@@ -271,6 +271,12 @@ class RoomsController < ApplicationController
     redirect_to room_path(@room.uid)
   end
 
+  # POST /:room_uid/record_hook
+  def record_hook
+    logger.info "Got record hook for room: #{@room.uid}"
+    logger.info "Params: #{params}"
+  end
+
   private
 
   def create_room_settings_string(options)

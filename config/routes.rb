@@ -122,6 +122,8 @@ Rails.application.routes.draw do
     get '/logout', to: 'rooms#logout', as: :logout_room
     post '/login', to: 'rooms#login', as: :login_room
     get '/token', to: 'rooms#token', as: :token_room
+
+    post '/record_hook', to: 'rooms#record_hook', as: :room_record_hook
   end
 
   get '/join/:name/:token', to: 'rooms#join_token', as: :invite_token_room

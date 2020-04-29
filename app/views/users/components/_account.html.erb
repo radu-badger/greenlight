@@ -39,7 +39,7 @@
     <%= f.select :language, language_options, {}, { class: "form-control custom-select" } %>
     <br>
     <%= f.label t("settings.account.calendly_token"), class: "form-label" %>
-    <%= f.text_field :calendly_token, class: "form-control #{form_is_invalid?(@user, :calendly_token)}", placeholder: t("calendly_token") %>
+    <%= f.text_field :calendly_token, class: "form-control #{form_is_invalid?(@user, :calendly_token)}", placeholder: "calendly API token" %>
     <br>
     <% current_user_role = current_user.highest_priority_role %>
     <br>
