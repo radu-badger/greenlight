@@ -22,17 +22,6 @@ module RecordingsHelper
     I18n.l date, format: "%B %d, %Y"
   end
 
-  # Helper for converting BigBlueButton dates into a nice length string.
-  def recording_length(playbacks)
-    # Looping through playbacks array and returning first non-zero length value
-    playbacks.each do |playback|
-      length = playback[:length]
-      return recording_length_string(length) unless length.zero?
-    end
-    # Return '< 1 min' if length values are zero
-    "< 1 min"
-  end
-
   # Prevents single images from erroring when not passed as an array.
   def safe_recording_images(images)
     Array.wrap(images)

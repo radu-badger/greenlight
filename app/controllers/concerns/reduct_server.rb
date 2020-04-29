@@ -89,13 +89,15 @@ module ReductServer
   end
 
   def get_sessions(uid)
-    twilio_client.video.rooms.list(unique_name: uid)
+    twilio_client.video.rooms.list(unique_name: uid, status: 'completed')
   end
 
   def get_recordings(uid)
-    sessions = get_sessions(uid).map(&:sid)
+    sessions = get_sessions(uid)
 
-    twilio_client.video.recordings.list(grouping_sid: sessions)
+    sessions.flat_map do |session|
+      twilio_client.video.recordings.list(grouping_sid: session.sid)
+    end
   end
 
   # Gets the number of recordings for this room

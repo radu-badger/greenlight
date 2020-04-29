@@ -146,5 +146,3 @@ group :development do
  gem 'guard-zeus'
  gem 'rack-livereload'
 end
-
-gem 'calendly', git: 'git@github.com:nurdymuny/calendly-ruby.git'

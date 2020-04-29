@@ -57,7 +57,7 @@ class AdminsController < ApplicationController
     @search, @order_column, @order_direction, recs =
       all_recordings(server_rooms, params.permit(:search, :column, :direction), true, true)
 
-    @pagy, @recordings = pagy_array(recs)
+    @pagy, @recordings = pagy_array(recs[:recordings])
   end
 
   # GET /admins/rooms
@@ -66,7 +66,7 @@ class AdminsController < ApplicationController
     @order_column = params[:column] && params[:direction] != "none" ? params[:column] : "created_at"
     @order_direction = params[:direction] && params[:direction] != "none" ? params[:direction] : "DESC"
 
-    @running_room_uids = all_running_meetings[:meetings].pluck(:meetingID)
+    @running_room_uids = all_running_meetings.map(&:unique_name)
 
     @user_list = shared_user_list if shared_access_allowed
 

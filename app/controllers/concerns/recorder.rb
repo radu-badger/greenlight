@@ -35,12 +35,10 @@ module Recorder
 
   # Makes paginated API calls to get recordings
   def all_recordings(room_uids, search_params = {}, ret_search_params = false, search_name = false)
-    res = { recordings: [] }
-
-    until room_uids.empty?
-      full_res = get_recordings(room_uids.pop)
-      res[:recordings].push(*full_res)
-    end
+    res = { recordings:
+      room_uids.flat_map do |room_uid|
+        get_recordings(room_uid)
+      end }
 
     format_recordings(res, search_params, ret_search_params, search_name)
   end
