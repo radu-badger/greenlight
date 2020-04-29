@@ -34,7 +34,7 @@ class RoomsController < ApplicationController
   before_action :verify_room_owner_valid, only: [:show, :join]
   before_action :verify_user_not_admin, only: [:show]
 
-  skip_before_action :verify_authenticity_token, only: [:record_hook]
+  skip_before_action :verify_authenticity_token, only: [:twilio_hook]
 
   # POST /
   def create
@@ -273,13 +273,34 @@ class RoomsController < ApplicationController
     redirect_to room_path(@room.uid)
   end
 
-  # POST /:room_uid/record_hook
-  def record_hook
-    logger.info "Got record hook for room: #{@room.uid}"
+  # POST /:room_uid/twilio_hook
+  def twilio_hook
     logger.info "Params: #{params}"
+
+    begin
+      method = "handle_" + event['StatusCallbackEvent'].tr('-', '_')
+      send method, params
+    rescue JSON::ParserError => e
+      render(json: { status: 400, error: "Invalid payload" }) && (return)
+    rescue NoMethodError => e
+      # missing event handler
+      logging.warn("unhandled webhook event: #{method} #{e}")
+    end
+
+    render json: { status: 200 }
   end
 
   private
+
+  def handle_room_ended(params)
+    # handle the event
+    logging.info("Room ended: #{@room.uid} => #{params.RoomSid}")
+  end
+
+  def handle_recording_completed(params)
+    # handle the event
+    logging.info("Room ended: #{@room.uid} => #{params.RoomSid}")
+  end
 
   def create_room_settings_string(options)
     room_settings = {

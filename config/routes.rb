@@ -123,7 +123,7 @@ Rails.application.routes.draw do
     post '/login', to: 'rooms#login', as: :login_room
     get '/token', to: 'rooms#token', as: :token_room
 
-    post '/record_hook', to: 'rooms#record_hook', as: :room_record_hook
+    post '/twilio_hook', to: 'rooms#twilio_hook', as: :room_twilio_hook
   end
 
   get '/join/:name/:token', to: 'rooms#join_token', as: :invite_token_room

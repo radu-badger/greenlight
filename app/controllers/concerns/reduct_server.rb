@@ -61,7 +61,7 @@ module ReductServer
         record_participants_on_connect: options[:meeting_recorded].to_s,
         type: 'group-small',
         unique_name: room.uid,
-        status_callback: room_record_hook_url(@room),
+        status_callback: room_twilio_hook_url(@room),
         status_callback_method: 'POST'
       }
 
