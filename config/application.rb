@@ -63,11 +63,15 @@ module Greenlight
       config.bigbluebutton_secret_default
     end
 
-    # Fix endpoint format if required.
-    config.bigbluebutton_endpoint += "/" unless config.bigbluebutton_endpoint.ends_with?('/')
-    config.bigbluebutton_endpoint += "api/" if config.bigbluebutton_endpoint.ends_with?('bigbluebutton/')
-    config.bigbluebutton_endpoint +=
-      "bigbluebutton/api/" unless config.bigbluebutton_endpoint.ends_with?('bigbluebutton/api/')
+    config.twilio_account_sid = ENV["TWILIO_ACCOUNT_SID"] || 'ACeed7a19688a6f9111c3d961e48878bd3'
+    config.twilio_api_key = ENV["TWILIO_API_KEY"] || 'SK81693fcd54fd3be05c676ab503918b1e'
+
+    config.twilio_video_endpoint = ENV["TWILIO_VIDEO_ENDPOINT"] || 'https://video.coachspot.page'
+    config.twilio_video_room_path = ENV["TWILIO_VIDEO_ROOM_PATH"] || '/room/'
+    config.twilio_video_join_path = ENV["TWILIO_VIDE_JOIN_PATH"] || '/join/'
+
+    config.reduct_endpoint = ENV["REDUCT_ENDPOINT"]
+    config.reduct_account = ENV["REDUCT_ACCOUNT"]
 
     if config.loadbalanced_configuration
       # Settings for fetching credentials from a loadbalancer based on provider.

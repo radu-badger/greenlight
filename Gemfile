@@ -56,6 +56,9 @@ gem 'net-ldap'
 # BigBlueButton API wrapper.
 gem 'bigbluebutton-api-ruby'
 
+# Twilio API
+gem 'twilio-ruby'
+
 # Front-end.
 gem 'bootstrap', '~> 4.3.1'
 gem 'tabler-rubygem', git: 'https://github.com/blindsidenetworks/tabler-rubygem.git', tag: '0.1.4.1'
@@ -133,3 +136,13 @@ gem 'random_password'
 gem "recaptcha"
 
 gem 'i18n-language-mapping', '~> 0.1.0'
+
+group :development, :test do
+  gem 'guard-livereload', '~> 2.5', require: false
+end
+
+group :development do
+ gem 'guard'
+ gem 'guard-zeus'
+ gem 'rack-livereload'
+end

@@ -121,7 +121,10 @@ Rails.application.routes.draw do
     post '/start', to: 'rooms#start', as: :start_room
     get '/logout', to: 'rooms#logout', as: :logout_room
     post '/login', to: 'rooms#login', as: :login_room
+    get '/token', to: 'rooms#token', as: :token_room
   end
+
+  get '/join/:name/:token', to: 'rooms#join_token', as: :invite_token_room
 
   # Recording operations routes
   scope '/:meetingID' do

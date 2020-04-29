@@ -24,7 +24,7 @@ class UsersController < ApplicationController
   include Recorder
   include Rolify
 
-  before_action :find_user, only: [:edit, :change_password, :delete_account, :update]
+  before_action :find_user, only: [:edit, :change_password, :delete_account, :update, :recordings]
   before_action :ensure_unauthenticated_except_twitter, only: [:create]
   before_action :check_user_signup_allowed, only: [:create]
   before_action :check_admin_of, only: [:edit, :change_password, :delete_account]
@@ -171,10 +171,13 @@ class UsersController < ApplicationController
 
   # GET /u/:user_uid/recordings
   def recordings
-    if current_user && current_user.uid == params[:user_uid]
+    if current_user && current_user.uid == @user.uid
       @search, @order_column, @order_direction, recs =
-        all_recordings(current_user.rooms.pluck(:bbb_id), params.permit(:search, :column, :direction), true)
-      @pagy, @recordings = pagy_array(recs)
+        all_recordings(current_user.rooms.pluck(:uid), params.permit(:search, :column, :direction), true)
+
+      logger.info(recs)
+
+      @pagy, @recordings = pagy_array(recs[:recordings])
     else
       redirect_to root_path
     end
@@ -203,7 +206,7 @@ class UsersController < ApplicationController
 
   def user_params
     params.require(:user).permit(:name, :email, :image, :password, :password_confirmation,
-      :new_password, :provider, :accepted_terms, :language)
+      :new_password, :provider, :accepted_terms, :language, :user_uid)
   end
 
   def send_registration_email

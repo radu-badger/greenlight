@@ -52,7 +52,7 @@ class RecordingsController < ApplicationController
   private
 
   def find_room
-    @room = Room.find_by!(bbb_id: params[:meetingID])
+    @room = Room.find_by!(uid: params[:meetingID])
   end
 
   # Ensure the user is logged into the room they are accessing.

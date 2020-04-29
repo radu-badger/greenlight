@@ -21,7 +21,7 @@ module AdminsHelper
 
   # Gets the email of the room owner to which the recording belongs to
   def recording_owner_email(room_id)
-    Room.find_by(bbb_id: room_id).owner.email
+    Room.find_by(uid: room_id).owner.email
   end
 
   def admin_invite_registration
@@ -91,6 +91,6 @@ module AdminsHelper
 
   # Get the room status to display in the Server Rooms table
   def room_is_running(id)
-    @running_room_bbb_ids.include?(id)
+    @running_room_uids.include?(id)
   end
 end

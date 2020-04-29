@@ -66,7 +66,7 @@ class AdminsController < ApplicationController
     @order_column = params[:column] && params[:direction] != "none" ? params[:column] : "created_at"
     @order_direction = params[:direction] && params[:direction] != "none" ? params[:direction] : "DESC"
 
-    @running_room_bbb_ids = all_running_meetings[:meetings].pluck(:meetingID)
+    @running_room_uids = all_running_meetings[:meetings].pluck(:meetingID)
 
     @user_list = shared_user_list if shared_access_allowed
 

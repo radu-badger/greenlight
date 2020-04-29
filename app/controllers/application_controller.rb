@@ -17,7 +17,7 @@
 # with BigBlueButton; if not, see <http://www.gnu.org/licenses/>.
 
 class ApplicationController < ActionController::Base
-  include BbbServer
+  include ReductServer
 
   before_action :redirect_to_https, :set_user_domain, :set_user_settings, :maintenance_mode?, :migration_error?,
     :user_locale, :check_admin_password, :check_user_role
@@ -40,8 +40,8 @@ class ApplicationController < ActionController::Base
   end
   helper_method :current_user
 
-  def bbb_server
-    @bbb_server ||= Rails.configuration.loadbalanced_configuration ? bbb(@user_domain) : bbb("greenlight")
+  def twilio_client
+    @twilio_client ||= twilio_rest_client
   end
 
   # Force SSL
@@ -191,10 +191,10 @@ class ApplicationController < ActionController::Base
   end
 
   # Manually handle BigBlueButton errors
-  rescue_from BigBlueButton::BigBlueButtonException do |ex|
-    logger.error "BigBlueButtonException: #{ex}"
-    render "errors/bigbluebutton_error"
-  end
+  # rescue_from BigBlueButton::BigBlueButtonException do |ex|
+  #  logger.error "BigBlueButtonException: #{ex}"
+  #  render "errors/bigbluebutton_error"
+  # end
 
   # Manually deal with 401 errors
   rescue_from CanCan::AccessDenied do |_exception|

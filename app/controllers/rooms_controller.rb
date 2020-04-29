@@ -63,7 +63,7 @@ class RoomsController < ApplicationController
   # GET /:room_uid
   def show
     @anyone_can_start = JSON.parse(@room[:room_settings])["anyoneCanStart"]
-    @room_running = room_running?(@room.bbb_id)
+    @room_running = room_running?(@room.uid)
     @shared_room = room_shared_with_user
 
     # If its the current user's room
@@ -71,7 +71,7 @@ class RoomsController < ApplicationController
       if current_user.highest_priority_role.get_permission("can_create_rooms")
         # User is allowed to have rooms
         @search, @order_column, @order_direction, recs =
-          recordings(@room.bbb_id, params.permit(:search, :column, :direction), true)
+          recordings(@room.uid, params.permit(:search, :column, :direction), true)
 
         @user_list = shared_user_list if shared_access_allowed
 
@@ -164,13 +164,9 @@ class RoomsController < ApplicationController
     opts[:mute_on_start] = room_settings["muteOnStart"]
     opts[:require_moderator_approval] = room_settings["requireModeratorApproval"]
 
-    begin
-      redirect_to join_path(@room, current_user.name, opts, current_user.uid)
-    rescue BigBlueButton::BigBlueButtonException => e
-      logger.error("Support: #{@room.uid} start failed: #{e}")
+    start_session(@room, opts)
 
-      redirect_to room_path, alert: I18n.t(e.key.to_s.underscore, default: I18n.t("bigbluebutton_exception"))
-    end
+    redirect_to join_path(@room, current_user.name, opts, current_user.uid)
 
     # Notify users that the room has started.
     # Delay 5 seconds to allow for server start, although the request will retry until it succeeds.

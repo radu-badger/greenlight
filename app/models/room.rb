@@ -16,7 +16,7 @@
 # You should have received a copy of the GNU Lesser General Public License along
 # with BigBlueButton; if not, see <http://www.gnu.org/licenses/>.
 
-require 'bbb_api'
+require 'reduct_api'
 
 class Room < ApplicationRecord
   include Deleteable
@@ -85,7 +85,7 @@ class Room < ApplicationRecord
   # Generates a uid for the room and BigBlueButton.
   def setup
     self.uid = random_room_uid
-    self.bbb_id = Digest::SHA1.hexdigest(Rails.application.secrets[:secret_key_base] + Time.now.to_i.to_s).to_s
+    # self.bbb_id = Digest::SHA1.hexdigest(Rails.application.secrets[:secret_key_base] + Time.now.to_i.to_s).to_s
     self.moderator_pw = RandomPassword.generate(length: 12)
     self.attendee_pw = RandomPassword.generate(length: 12)
   end

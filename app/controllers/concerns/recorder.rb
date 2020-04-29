@@ -21,55 +21,41 @@ module Recorder
   include RecordingsHelper
 
   # Fetches all recordings for a room.
-  def recordings(room_bbb_id, search_params = {}, ret_search_params = false)
-    res = get_recordings(room_bbb_id)
+  def recordings(uid, search_params = {}, ret_search_params = false)
+    res = get_recordings(uid)
 
     format_recordings(res, search_params, ret_search_params)
   end
 
   # Fetches a rooms public recordings.
-  def public_recordings(room_bbb_id, search_params = {}, ret_search_params = false)
-    search, order_col, order_dir, recs = recordings(room_bbb_id, search_params, ret_search_params)
-    [search, order_col, order_dir, recs.select { |r| r[:metadata][:"gl-listed"] == "true" }]
+  def public_recordings(uid, search_params = {}, ret_search_params = false)
+    search, order_col, order_dir, recs = recordings(uid, search_params, ret_search_params)
+    [search, order_col, order_dir, { recordings: [] }]
   end
 
   # Makes paginated API calls to get recordings
-  def all_recordings(room_bbb_ids, search_params = {}, ret_search_params = false, search_name = false)
+  def all_recordings(room_uids, search_params = {}, ret_search_params = false, search_name = false)
     res = { recordings: [] }
 
-    until room_bbb_ids.empty?
-      # bbb.get_recordings returns an object
-      # take only the array portion of the object that is returned
-      full_res = get_multiple_recordings(room_bbb_ids.pop(Rails.configuration.pagination_number))
-      res[:recordings].push(*full_res[:recordings])
+    until room_uids.empty?
+      full_res = get_recordings(room_uids.pop)
+      res[:recordings].push(*full_res)
     end
 
     format_recordings(res, search_params, ret_search_params, search_name)
   end
 
   # Format, filter, and sort recordings to match their current use in the app
-  def format_recordings(api_res, search_params, ret_search_params, search_name = false)
+  def format_recordings(api_res, search_params, ret_search_params, _search_name = false)
     search = search_params[:search] || ""
     order_col = search_params[:column] && search_params[:direction] != "none" ? search_params[:column] : "end_time"
     order_dir = search_params[:column] && search_params[:direction] != "none" ? search_params[:direction] : "desc"
 
     search = search.downcase
 
-    api_res[:recordings].each do |r|
-      next if r.key?(:error)
-      # Format playbacks in a more pleasant way.
-      r[:playbacks] = if !r[:playback] || !r[:playback][:format]
-        []
-      elsif r[:playback][:format].is_a?(Array)
-        r[:playback][:format]
-      else
-        [r[:playback][:format]]
-      end
-      r.delete(:playback)
-    end
-
-    recs = filter_recordings(api_res, search, search_name)
-    recs = sort_recordings(recs, order_col, order_dir)
+    recs = api_res
+    # recs = filter_recordings(api_res, search, search_name)
+    # recs = sort_recordings(recs, order_col, order_dir)
 
     if ret_search_params
       [search, order_col, order_dir, recs]
@@ -80,6 +66,7 @@ module Recorder
 
   def filter_recordings(api_res, search, search_name = false)
     api_res[:recordings].select do |r|
+             logger.info("Recording: #{r}")
              (!r[:metadata].nil? && ((!r[:metadata][:name].nil? &&
                     r[:metadata][:name].downcase.include?(search)) ||
                   (r[:metadata][:"gl-listed"] == "true" && search == "public") ||
