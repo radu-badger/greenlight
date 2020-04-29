@@ -294,12 +294,12 @@ class RoomsController < ApplicationController
 
   def handle_room_ended(params)
     # handle the event
-    loger.info("Room ended: #{@room.uid} => #{params.RoomSid}")
+    loger.info("Room ended: #{@room.uid} => #{params['RoomSid']}")
   end
 
   def handle_recording_completed(params)
     # handle the event
-    logger.info("Room ended: #{@room.uid} => #{params.RoomSid}")
+    logger.info("Room ended: #{@room.uid} => #{params['RoomSid']}")
   end
 
   def create_room_settings_string(options)
