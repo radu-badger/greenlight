@@ -278,7 +278,7 @@ class RoomsController < ApplicationController
     logger.info "Params: #{params}"
 
     begin
-      method = "handle_" + event['StatusCallbackEvent'].tr('-', '_')
+      method = "handle_" + params['StatusCallbackEvent'].tr('-', '_')
       send method, params
     rescue JSON::ParserError => e
       render(json: { status: 400, error: "Invalid payload" }) && (return)
