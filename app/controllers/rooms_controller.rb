@@ -284,7 +284,7 @@ class RoomsController < ApplicationController
       render(json: { status: 400, error: "Invalid payload" }) && (return)
     rescue NoMethodError => e
       # missing event handler
-      logging.warn("unhandled webhook event: #{method} #{e}")
+      logger.warn("unhandled webhook event: #{method} #{e}")
     end
 
     render json: { status: 200 }
@@ -294,12 +294,12 @@ class RoomsController < ApplicationController
 
   def handle_room_ended(params)
     # handle the event
-    logging.info("Room ended: #{@room.uid} => #{params.RoomSid}")
+    loger.info("Room ended: #{@room.uid} => #{params.RoomSid}")
   end
 
   def handle_recording_completed(params)
     # handle the event
-    logging.info("Room ended: #{@room.uid} => #{params.RoomSid}")
+    logger.info("Room ended: #{@room.uid} => #{params.RoomSid}")
   end
 
   def create_room_settings_string(options)
