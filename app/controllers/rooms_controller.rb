@@ -34,6 +34,8 @@ class RoomsController < ApplicationController
   before_action :verify_room_owner_valid, only: [:show, :join]
   before_action :verify_user_not_admin, only: [:show]
 
+  skip_before_action :verify_authenticity_token, only: [:record_hook]
+
   # POST /
   def create
     # Return to root if user is not signed in
