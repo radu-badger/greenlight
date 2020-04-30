@@ -275,10 +275,8 @@ class RoomsController < ApplicationController
 
   # POST /:room_uid/twilio_hook
   def twilio_hook
-    logger.info "Params: #{params}"
-
     begin
-      method = "handle_" + params['StatusCallbackEvent'].tr('-', '_')
+      method = "handle_twilio_" + params['StatusCallbackEvent'].tr('-', '_')
       send method, params
     rescue JSON::ParserError => e
       render(json: { status: 400, error: "Invalid payload" }) && (return)
@@ -292,14 +290,34 @@ class RoomsController < ApplicationController
 
   private
 
-  def handle_room_ended(params)
-    # handle the event
-    loger.info("Room ended: #{@room.uid} => #{params['RoomSid']}")
+  def handle_twilio_recording_started(params)
+    logger.info("Recording started for room: #{@room.uid} => #{params['RoomSid']}")
+
+    begin
+      reduct_put_doc(@room.bbb_id, @room.name)
+    rescue Exception => e
+      logger.warn(e)
+    end
   end
 
-  def handle_recording_completed(params)
+  def handle_twilio_room_ended(params)
     # handle the event
     logger.info("Room ended: #{@room.uid} => #{params['RoomSid']}")
+  end
+
+  def handle_twilio_recording_completed(params)
+    # handle the event
+
+    logger.info("Recording completed: #{@room.uid} => #{params['RoomSid']}")
+
+    reduct_doc_id = params['RoomSid']
+    media_uri = params['MediaUri']
+    upload_uri = get_twilio_media_redirect(media_uri)
+
+    logger.info("Uploading tor reduct doc:  #{reduct_doc_id}, #{upload_uri}")
+
+    # TODO:  Double check RoomSid was actually part of this room
+    reduct_doc_uri_import(reduct_doc_id, upload_uri)
   end
 
   def create_room_settings_string(options)

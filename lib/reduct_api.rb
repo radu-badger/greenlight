@@ -1,12 +1,93 @@
 # frozen_string_literal: true
 
+require 'net/http'
+require 'json'
+
 module ReductApi
+  class LoginError < StandardError
+  end
+
   def reduct_endpoint
     Rails.configuration.reduct_endpoint
   end
 
   def video_endpoint
     Rails.configuration.twilio_video_endpoint
+  end
+
+  def reduct_uri(cmd)
+    URI.parse(reduct_endpoint).merge(cmd)
+  end
+
+  def reduct_post(cmd, content, headers = {})
+    headers['x-using-reduct-fetch'] = 'true'
+
+    post = Net::HTTP::Post.new(reduct_uri(cmd), headers)
+    post.body = content.to_json
+
+    post
+  end
+
+  def reduct_login
+    login_info = {
+      email:  Rails.application.secrets[:reduct_username],
+      password:  Rails.application.secrets[:reduct_password]
+    }
+
+    reduct_post('sign_in', login_info)
+  end
+
+  def reduct_login_http
+    # Create the HTTP objects
+    uri = URI.parse(reduct_endpoint)
+
+    reduct_http = Net::HTTP.new(uri.host, uri.port)
+    cmd = reduct_login
+
+    logger.info("Sending login cmd: #{cmd}")
+
+    resp = reduct_http.request(cmd).body
+
+    json_resp = JSON.parse(resp)
+
+    raise LoginError unless json_resp && json_resp.email == email
+
+    yield reduct_http
+  end
+
+  def reduct_userlog(op, path, content)
+    payload = { op: op, path: path, content: content }
+
+    reduct_post('userlog', payload)
+  end
+
+  def reduct_put_doc(doc_id, title, project_id = Rails.configuration.reduct_default_project)
+    doc = {
+      title: title,
+      doc_id: doc_id,
+      project_id: project_id,
+      transcription_confirmation_time: DateTime.now.iso8601,
+      media: {}
+    }
+
+    reduct_login_http do |reduct_http|
+      userlog_cmd = reduct_userlog('put', ['doc', doc_id], doc)
+
+      reduct_http.request(userlog_cmd)
+    end
+  end
+
+  def reduct_doc_uri_import(doc_id, *uris)
+    data = {
+      urls: uris,
+      auto_start_times: 'true'
+    }
+
+    reduct_login_http do |reduct_http|
+      upload_cmd = reduct_post("url-import?doc=#{doc_id}", data)
+
+      reduct_http.request(upload_cmd)
+    end
   end
 
   def twilio_rest_client

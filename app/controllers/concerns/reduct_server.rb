@@ -88,6 +88,11 @@ module ReductServer
     end
   end
 
+  def get_twilio_media_redirect(uri)
+    twilio_client.request('video.twilio.com', 443, 'GET', uri)
+    response.body['redirect_to']
+  end
+
   def get_sessions(uid)
     twilio_client.video.rooms.list(unique_name: uid, status: 'completed')
   end
