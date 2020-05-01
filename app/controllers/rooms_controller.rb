@@ -314,7 +314,9 @@ class RoomsController < ApplicationController
 
     reduct_doc_id = params['RoomSid']
 
-    media_uri = params['MediaUri']
+    twilio_video_resource_base = Rails.configuration[:twilio_video_resource_base]
+
+    media_uri = URI.join(twilio_video_resource_base, params['MediaUri'])
 
     logger.info("Getting media URI for #{media_uri}")
 

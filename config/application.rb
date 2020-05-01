@@ -70,6 +70,8 @@ module Greenlight
     config.twilio_video_room_path = ENV["TWILIO_VIDEO_ROOM_PATH"] || '/room/'
     config.twilio_video_join_path = ENV["TWILIO_VIDE_JOIN_PATH"] || '/join/'
 
+    config.twilio_video_resource_base = ENV["TWILIO_VIDEO_RESOURCE_BASE"] || 'https://video.twilio.com'
+
     config.reduct_endpoint = ENV["REDUCT_ENDPOINT"] || 'https://dev.distill.video'
     config.reduct_default_project = ENV["REDUCT_DEFAULT_PROJECT"] || '78739d90a1'
 
