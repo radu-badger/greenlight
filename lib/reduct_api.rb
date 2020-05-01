@@ -93,6 +93,17 @@ module ReductApi
     end
   end
 
+  def get_twilio_media_redirect(uri)
+    logger.info("Requesting TWILIO media redirect for URI #{uri}")
+
+    response = twilio_client.request('video.twilio.com', 443, 'GET', uri)
+
+    redirect_uri = NET::HTTP.get(URI(response.body['redirect_to']))
+
+    logger.info("GOT:  #{redirect_uri}")
+    redirect_uri
+  end
+
   def get_twilio_token(name, room)
     config = Rails.configuration
     app = Rails.application
