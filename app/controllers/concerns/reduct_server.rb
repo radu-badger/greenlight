@@ -89,8 +89,14 @@ module ReductServer
   end
 
   def get_twilio_media_redirect(uri)
-    twilio_client.request('video.twilio.com', 443, 'GET', uri)
-    response.body['redirect_to']
+    logger.info("Requesting TWILIO media redirect for URI #{uri}")
+
+    response = twilio_client.request('video.twilio.com', 443, 'GET', uri)
+
+    redirect_uri = NET::HTTP.get(URI(response.body['redirect_to']))
+
+    logger.info("GOT:  #{redirect_uri}")
+    redirect_uri
   end
 
   def get_sessions(uid)
