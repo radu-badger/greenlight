@@ -33,6 +33,8 @@ module Joiner
     @search, @order_column, @order_direction, pub_recs =
       public_recordings(@room.uid, params.permit(:search, :column, :direction), true)
 
+    pub_recs = []
+
     @pagy, @public_recordings = pagy_array(pub_recs)
 
     render :join

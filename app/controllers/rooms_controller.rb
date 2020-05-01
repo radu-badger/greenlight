@@ -295,7 +295,7 @@ class RoomsController < ApplicationController
 
     begin
       reduct_put_doc(@room.bbb_id, @room.name)
-    rescue Exception => e
+    rescue StandardError => e
       logger.warn(e)
     end
   end
