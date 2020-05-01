@@ -71,7 +71,6 @@ module Greenlight
     config.twilio_video_join_path = ENV["TWILIO_VIDE_JOIN_PATH"] || '/join/'
 
     config.reduct_endpoint = ENV["REDUCT_ENDPOINT"] || 'http://dev.distill.video'
-    config.reduct_account = ENV["REDUCT_ACCOUNT"]
     config.reduct_default_project = ENV["REDUCT_DEFAULT_PROJECT"] || '78739d90a1'
 
     if config.loadbalanced_configuration
