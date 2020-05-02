@@ -27,7 +27,7 @@ module ReductServer
   def room_running?(uid)
     logger.info("Looking for room: #{uid}")
 
-    rooms = twilio_client.video.list(status: 'in-progress', unique_name: uid)
+    rooms = twilio_client.video.rooms.list(status: 'in-progress', unique_name: uid)
 
     logger.info("Found: #{rooms}")
 
