@@ -18,10 +18,13 @@
 
 require 'reduct_api'
 
+include 'securerandom'
+
 class Room < ApplicationRecord
   include Deleteable
 
   before_create :setup
+  after_create :create_reduct_project
 
   validates :name, presence: true
 
@@ -85,9 +88,18 @@ class Room < ApplicationRecord
   # Generates a uid for the room and BigBlueButton.
   def setup
     self.uid = random_room_uid
-    # self.bbb_id = Digest::SHA1.hexdigest(Rails.application.secrets[:secret_key_base] + Time.now.to_i.to_s).to_s
+
     self.moderator_pw = RandomPassword.generate(length: 12)
     self.attendee_pw = RandomPassword.generate(length: 12)
+
+    # use for Reduct ID
+    self.bbb_id = SecureRandom.hex(10)
+
+    # self.bbb_id = Digest::SHA1.hexdigest(Rails.application.secrets[:secret_key_base] + Time.now.to_i.to_s).to_s
+  end
+
+  def create_reduct_project
+    reduct_put_project(bbb_id, name, Rails.configuration.reduct_org_id, [owner.email])
   end
 
   # Generates a three character uid chunk.

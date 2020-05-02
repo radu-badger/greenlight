@@ -17,6 +17,7 @@
 # with BigBlueButton; if not, see <http://www.gnu.org/licenses/>.
 
 require 'reduct_api'
+require 'securerandom'
 
 class User < ApplicationRecord
   include Deleteable
@@ -256,7 +257,8 @@ class User < ApplicationRecord
 
   def setup_user
     # Initializes a room for the user and assign a BigBlueButton user id.
-    id = "gl-#{(0...12).map { rand(65..90).chr }.join.downcase}"
+    id = SecureRandom.hex(10)
+
     room = Room.create!(owner: self, name: I18n.t("home_room"))
 
     update_attributes(uid: id, main_room: room)

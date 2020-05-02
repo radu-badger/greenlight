@@ -25,26 +25,18 @@ module ReductServer
 
   # Checks if a room is running on the BigBlueButton server.
   def room_running?(uid)
-    logger.info(twilio_client)
     logger.info("Looking for room: #{uid}")
 
-    room = twilio_client.video.rooms(uid)
+    rooms = twilio_client.video.list(status: 'in-progress', unique_name: uid)
 
-    begin
-      room_rec = room.fetch
+    logger.info("Found: #{rooms}")
 
-      logger.info("Room record: #{room_rec}")
-
-      return room_rec.status == 'in-progress'
-    rescue Twilio::REST::TwilioError => e
-      logger.info(e.message)
-      return false
-    end
+    rooms.not_empty?
   end
 
   # Returns a list of all running meetings
   def all_running_meetings
-    twilio_client.video.rooms.list(status: 'in-progress', limit: 50)
+    twilio_client.video.rooms.list(status: 'in-progress')
   end
 
   # Returns a URL to join a user into a meeting.
@@ -65,26 +57,18 @@ module ReductServer
         status_callback_method: 'POST'
       }
 
-      logger.info("Created room with options: #{twilio_create_options}")
+      logger.info("Created twilipo room with options: #{twilio_create_options}")
 
       # Send the create request.
-      meeting = twilio_client.video.rooms.create(twilio_create_options)
+      twilio_room = twilio_client.video.rooms.create(twilio_create_options)
 
-      room.update_attributes(bbb_id: meeting.sid)
-
+      # room.update_attributes(bbb_id: meeting.sid)
       # meeting = bbb_server.create_meeting(room.name, room.bbb_id, create_options)
       # Update session info.
+
       room.update_attributes(sessions: room.sessions + 1, last_session: DateTime.now)
-    end
 
-    if options[:meeting_recorded]
-      reduct_create_options = {
-        "meta_reduct-origin-version": Greenlight::Application::VERSION,
-        "meta_reduct-origin": "Greenlight",
-        "meta_reduct-origin-server-name": options[:host],
-        logoutURL: options[:meeting_logout_url] || '',
-      }
-
+      reduct_put_doc(twilio_room.sid, room.name, room.bbb_id) if options[:meeting_recorded]
     end
   end
 

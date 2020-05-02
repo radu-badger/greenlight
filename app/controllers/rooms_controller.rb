@@ -292,16 +292,6 @@ class RoomsController < ApplicationController
 
   private
 
-  def handle_twilio_room_created(params)
-    logger.info("Started room: #{@room.uid} => #{params['RoomSid']}")
-
-    begin
-      reduct_put_doc(@room.bbb_id, @room.name)
-    rescue StandardError => e
-      logger.warn(e)
-    end
-  end
-
   def handle_twilio_room_ended(params)
     # handle the event
     logger.info("Room ended: #{@room.uid} => #{params['RoomSid']}")
