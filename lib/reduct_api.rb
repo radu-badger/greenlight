@@ -93,7 +93,7 @@ module ReductApi
       org_editable: org_editable
     }
 
-    userlog_cmd = reduct_userlog(put, ['project', project_id], project)
+    userlog_cmd = reduct_userlog('put', ['project', project_id], project)
 
     logger.info("Sending request command: #{userlog_cmd}")
     reduct_http do |http|
