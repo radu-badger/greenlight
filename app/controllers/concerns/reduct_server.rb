@@ -31,7 +31,7 @@ module ReductServer
 
     logger.info("Found: #{rooms}")
 
-    rooms.not_empty?
+    !rooms.empty?
   end
 
   # Returns a list of all running meetings

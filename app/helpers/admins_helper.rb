@@ -61,7 +61,7 @@ module AdminsHelper
         I18n.t("administrator.site_settings.registration.methods.invite")
     when Rails.configuration.registration_methods[:approval]
         I18n.t("administrator.site_settings.registration.methods.approval")
-      end
+    end
   end
 
   def log_level_string
