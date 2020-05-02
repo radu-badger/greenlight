@@ -7,16 +7,12 @@ module ReductApi
   class LoginError < StandardError
   end
 
-  def reduct_endpoint
-    Rails.configuration.reduct_endpoint
+  def reduct_uri(cmd = '')
+    URI.parse(Rails.configuration.reduct_endpoint).merge(cmd)
   end
 
   def video_endpoint
     Rails.configuration.twilio_video_endpoint
-  end
-
-  def reduct_uri(cmd)
-    URI.parse(reduct_endpoint).merge(cmd)
   end
 
   def reduct_post(cmd, content, _headers = {})
@@ -32,9 +28,7 @@ module ReductApi
 
   def reduct_http
     # Create the HTTP objects
-    uri = URI.parse(reduct_endpoint)
-
-    reduct_http = Net::HTTP.new(uri.host, uri.port)
+    reduct_http = Net::HTTP.new(reduct_uri.host, reduct_uri.port)
 
     yield reduct_http
   end
