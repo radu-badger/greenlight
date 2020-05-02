@@ -98,7 +98,7 @@ module ReductApi
 
     response = twilio_client.request('video.twilio.com', 443, 'GET', uri)
 
-    redirect_uri = NET::HTTP.get(URI(response.body['redirect_to']))
+    redirect_uri = Net::HTTP.get(URI(response.body['redirect_to']))
 
     logger.info("GOT:  #{redirect_uri}")
     redirect_uri
