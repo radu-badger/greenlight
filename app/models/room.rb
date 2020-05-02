@@ -17,11 +17,11 @@
 # with BigBlueButton; if not, see <http://www.gnu.org/licenses/>.
 
 require 'reduct_api'
-
 require 'securerandom'
 
 class Room < ApplicationRecord
   include Deleteable
+  include ReductApi
 
   before_create :setup
   after_create :create_reduct_project
