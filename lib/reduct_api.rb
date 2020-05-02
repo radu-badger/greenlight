@@ -87,7 +87,7 @@ module ReductApi
         app.secrets[:twilio_api_secret]
       )
 
-      logger.info("TWILIO response #{res.code}, #{res.message}")
+      logger.info("TWILIO response #{res}")
       return res
     rescue Twilio::REST::TwilioError => e
       logger.warn(e.message)
