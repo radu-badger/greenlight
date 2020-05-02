@@ -71,7 +71,7 @@ module ReductApi
     reduct_http do |reduct_http|
       upload_cmd = reduct_post("url-import?doc=#{doc_id}", data)
 
-      logger.info("Sending upload command: #{userlog_cmd}")
+      logger.info("Sending upload command: #{upload_cmd}")
       reduct_http.request(upload_cmd)
     end
   end
