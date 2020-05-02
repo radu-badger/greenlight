@@ -24,7 +24,7 @@ module ReductApi
 
     req.body = content.to_json
 
-    logger.info(`Reduct GET: #{req.uri}, #{req.body}`)
+    logger.info("Reduct GET: #{req.uri}, #{req.body}")
 
     reduct_http do |http|
       http.get(req)
@@ -44,7 +44,7 @@ module ReductApi
 
     post.body = content.to_json
 
-    logger.info(`Reduct POST: #{post.uri}, #{post.body}`)
+    logger.info("Reduct POST: #{post.uri}, #{post.body}")
 
     post
   end
@@ -76,7 +76,7 @@ module ReductApi
 
     userlog_cmd = reduct_userlog('put', ['doc', doc_id], doc)
 
-    logger.info("Sending request command: #{userlog_cmd}")
+    logger.info("Sending request command: #{userlog_cmd.uri}: #{userlog_cmd.body}")
 
     reduct_http do |http|
       res = http.request(userlog_cmd)
@@ -95,7 +95,8 @@ module ReductApi
 
     userlog_cmd = reduct_userlog('put', ['project', project_id], project)
 
-    logger.info("Sending request command: #{userlog_cmd}")
+    logger.info("Sending request command: #{userlog_cmd.uri}: #{userlog_cmd.body}")
+
     reduct_http do |http|
       res = http.request(userlog_cmd)
 
