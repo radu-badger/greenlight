@@ -20,7 +20,7 @@ module ReductApi
   end
 
   def reduct_post(cmd, content, _headers = {})
-    api_token = Rails.application.secrets(:reduct_api_token)
+    api_token = Rails.application.secrets[:reduct_api_token]
 
     post = Net::HTTP::Post.new(reduct_uri(cmd))
     post['x-using-reduct-fetch'] = 'true'
