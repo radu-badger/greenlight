@@ -55,9 +55,9 @@ module ReductApi
       userlog_cmd = reduct_userlog('put', ['doc', doc_id], doc)
 
       logger.info("Sending request command: #{userlog_cmd}")
-      resp = reduct_http.request(userlog_cmd)
+      res = reduct_http.request(userlog_cmd)
 
-      logger.info(resp)
+      logger.info("REDUCT response #{res.code}, #{res.message}")
     end
   end
 
@@ -71,9 +71,9 @@ module ReductApi
       upload_cmd = reduct_post("url-import?doc=#{doc_id}", data)
 
       logger.info("Sending upload command: #{upload_cmd}")
-      resp = reduct_http.request(upload_cmd)
+      res = reduct_http.request(upload_cmd)
 
-      logger.info(resp)
+      logger.info("REDUCT response #{res.code}, #{res.message}")
     end
   end
 
@@ -87,7 +87,7 @@ module ReductApi
         app.secrets[:twilio_api_secret]
       )
 
-      logger.info(res)
+      logger.info("TWILIO response #{res.code}, #{res.message}")
       return res
     rescue Twilio::REST::TwilioError => e
       logger.warn(e.message)
