@@ -52,7 +52,9 @@ module ReductApi
       userlog_cmd = reduct_userlog('put', ['doc', doc_id], doc)
 
       logger.info("Sending request command: #{userlog_cmd}")
-      reduct_http.request(userlog_cmd)
+      resp = reduct_http.request(userlog_cmd)
+
+      logger.info(resp)
     end
   end
 
@@ -66,7 +68,9 @@ module ReductApi
       upload_cmd = reduct_post("url-import?doc=#{doc_id}", data)
 
       logger.info("Sending upload command: #{upload_cmd}")
-      reduct_http.request(upload_cmd)
+      resp = reduct_http.request(upload_cmd)
+
+      logger.info(resp)
     end
   end
 
