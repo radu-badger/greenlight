@@ -18,7 +18,7 @@
 
 require 'reduct_api'
 
-include 'securerandom'
+require 'securerandom'
 
 class Room < ApplicationRecord
   include Deleteable
