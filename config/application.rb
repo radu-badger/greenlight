@@ -73,7 +73,7 @@ module Greenlight
     config.twilio_video_resource_base = ENV["TWILIO_VIDEO_RESOURCE_BASE"] || 'https://video.twilio.com'
 
     config.reduct_endpoint = ENV["REDUCT_ENDPOINT"] || 'https://dev.distill.video'
-    config.reduct_default_project = ENV["REDUCT_DEFAULT_PROJECT"] || '78739d90a1'
+    config.reduct_default_project = ENV["REDUCT_DEFAULT_PROJECT"] || '4ee9344662'
 
     if config.loadbalanced_configuration
       # Settings for fetching credentials from a loadbalancer based on provider.

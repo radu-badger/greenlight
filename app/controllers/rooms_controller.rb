@@ -292,7 +292,7 @@ class RoomsController < ApplicationController
 
   private
 
-  def handle_twilio_room_started(params)
+  def handle_twilio_room_created(params)
     logger.info("Started room: #{@room.uid} => #{params['RoomSid']}")
 
     begin
