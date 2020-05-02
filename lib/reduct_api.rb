@@ -21,7 +21,10 @@ module ReductApi
     post = Net::HTTP::Post.new(reduct_uri(cmd))
     post['x-using-reduct-fetch'] = 'true'
     post['cookie'] = "token=#{api_token}"
+
     post.body = content.to_json
+
+    logger.info(`Reduct POST: #{post.uri}, #{post.body}`)
 
     post
   end
@@ -37,7 +40,7 @@ module ReductApi
   end
 
   def reduct_userlog(op, path, content)
-    payload = { op: op, path: path, content: content }
+    payload = { op: op, path: path, data: content }
 
     reduct_post('userlog', payload)
   end
