@@ -29,6 +29,9 @@ module ReductApi
   def reduct_http
     # Create the HTTP objects
     reduct_http = Net::HTTP.new(reduct_uri.host, reduct_uri.port)
+    reduct_http.use_ssl = (reduct_uri.scheme == "https")
+
+    reduct_http.start
 
     yield reduct_http
   end
