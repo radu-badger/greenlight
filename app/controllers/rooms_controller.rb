@@ -276,9 +276,8 @@ class RoomsController < ApplicationController
   # POST /:room_uid/twilio_hook
   def twilio_hook
     begin
-      logger.info("Got twillio callback  #{params}")
+      logger.info("Got twillio callback  #{params['StatusCallbackEvent']}")
       method = "handle_twilio_" + params['StatusCallbackEvent'].tr('-', '_')
-      logger.info(" .    -> #{method}")
       send method, params
     rescue JSON::ParserError => e
       render(json: { status: 400, error: "Invalid payload" }) && (return)

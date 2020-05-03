@@ -57,8 +57,6 @@ module ReductServer
         status_callback_method: 'POST'
       }
 
-      logger.info("Created twilipo room with options: #{twilio_create_options}")
-
       # Send the create request.
       twilio_room = twilio_client.video.rooms.create(twilio_create_options)
 

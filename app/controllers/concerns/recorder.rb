@@ -64,7 +64,6 @@ module Recorder
 
   def filter_recordings(api_res, search, search_name = false)
     api_res[:recordings].select do |r|
-             logger.info("Recording: #{r}")
              (!r[:metadata].nil? && ((!r[:metadata][:name].nil? &&
                     r[:metadata][:name].downcase.include?(search)) ||
                   (r[:metadata][:"gl-listed"] == "true" && search == "public") ||

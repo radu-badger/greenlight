@@ -129,7 +129,6 @@ module ReductApi
         app.secrets[:twilio_api_secret]
       )
 
-      logger.info("TWILIO response #{res}")
       return res
     rescue Twilio::REST::TwilioError => e
       logger.warn(e.message)
@@ -137,13 +136,10 @@ module ReductApi
   end
 
   def get_twilio_media_redirect(uri)
-    logger.info("Requesting TWILIO media redirect for URI #{uri}")
-
     response = twilio_client.request('video.twilio.com', 443, 'GET', uri)
 
     redirect_uri = response.body['redirect_to']
 
-    logger.info("GOT:  #{redirect_uri}")
     redirect_uri
   end
 
