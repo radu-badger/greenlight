@@ -160,7 +160,8 @@ module ReductApi
       identity: name
     )
 
-    room_sid = twilio_client.video.rooms(room_name).sid
+    room = twilio_client.video.rooms(room_name).fetch
+    room_sid = room.sid
 
     grant = Twilio::JWT::AccessToken::VideoGrant.new
     grant.room = room_sid
