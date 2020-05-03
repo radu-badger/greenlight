@@ -68,8 +68,7 @@ module ReductApi
   def reduct_put_doc(doc_id, title, project_id)
     doc = {
       title: title,
-      doc_id: doc_id,
-      project_id: project_id,
+      project: project_id,
       transcription_confirmation_time: DateTime.now.iso8601,
       media: {}
     }
