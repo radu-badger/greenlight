@@ -74,6 +74,7 @@ module Greenlight
 
     config.reduct_endpoint = ENV["REDUCT_ENDPOINT"] || 'https://dev.distill.video'
     config.reduct_org_id   = ENV["REDUCT_ORG_ID"] || '12345678'
+    config.reduct_master_account = ENV["REDUCT_MASTER_ACCOUNT"] || "radu@raduta.net"
 
     if config.loadbalanced_configuration
       # Settings for fetching credentials from a loadbalancer based on provider.

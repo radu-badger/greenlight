@@ -89,7 +89,7 @@ module ReductApi
     project = {
       title: title,
       organization: Rails.configuration.reduct_org_id,
-      editors: editors,
+      editors: [Rails.configuration.reduct_master_account] + editors,
       org_editable: org_editable
     }
 
