@@ -66,7 +66,10 @@ module ReductServer
 
       room.update_attributes(sessions: room.sessions + 1, last_session: DateTime.now)
 
-      reduct_put_doc(twilio_room.sid, room.name, room.bbb_id) if options[:meeting_recorded]
+      today = I18n.l DateTime.now, format: "%B %d, %Y"
+      session_name = "#{room.name} on #{today}"
+
+      reduct_put_doc(twilio_room.sid, session_name, room.bbb_id) if options[:meeting_recorded]
     end
   end
 
