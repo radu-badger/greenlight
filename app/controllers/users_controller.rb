@@ -175,8 +175,6 @@ class UsersController < ApplicationController
       @search, @order_column, @order_direction, recs =
         all_recordings(current_user.rooms.pluck(:uid), params.permit(:search, :column, :direction), true)
 
-      logger.info(recs)
-
       @pagy, @recordings = pagy_array(recs[:recordings])
     else
       redirect_to root_path

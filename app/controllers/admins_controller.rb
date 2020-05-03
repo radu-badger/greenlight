@@ -100,6 +100,8 @@ class AdminsController < ApplicationController
   def approve
     @user.remove_role :pending
 
+    reduct_create_user(@user.email)
+
     send_user_approved_email(@user)
 
     redirect_back fallback_location: admins_path, flash: { success: I18n.t("administrator.flash.approved") }

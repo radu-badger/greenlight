@@ -119,6 +119,18 @@ module ReductApi
     end
   end
 
+  def reduct_create_user(email)
+    reduct_http do |http|
+      create_user_cmd = reduct_post("/_user/_create", email: email)
+
+      logger.info("Sending create user command: #{create_user_cmd}")
+
+      res = http.request(create_user_cmd)
+
+      logger.info("REDUCT response #{res.code}, #{res.message}")
+    end
+  end
+
   def twilio_rest_client
     config = Rails.configuration
     app = Rails.application
