@@ -15,12 +15,7 @@
 
 <tr>
     <td>
-        <div id="recording-title" class="form-inline edit_hover_class" data-recordid="<%= recording.sid %>" data-path="<%= rename_recording_path(meetingID: recording.source_sid, record_id: recording.sid) %>">
-            <text id='recording-text'>
-                <%= recording["title"] %>
-            </text>
-            <a><i id="edit-record" class="fa fa-edit align-top ml-2" data-edit-recordid="<%= recording.sid %>"></i></a>
-        </div>
+        <%= recording["title"] %>
         <div class="small text-muted">
             <%= t("recording.recorded_on", date: recording_date(recording['transcription_confirmation_time'])) %>
         </div>
