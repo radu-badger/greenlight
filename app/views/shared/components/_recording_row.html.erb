@@ -28,7 +28,7 @@
         <%= recording['duration'] %>
     </td>
     <td id="recording-users" class="text-left">
-        <%= recording['speaker_map'].keys || "-" %>
+        <%= recording['media'].flat_map { |media| media['speaker_map'].keys } || "-" %>
     </td>
     <td class="text-left">
     </td>
