@@ -17,12 +17,12 @@
     <td>
         <div id="recording-title" class="form-inline edit_hover_class" data-recordid="<%= recording.sid %>" data-path="<%= rename_recording_path(meetingID: recording.source_sid, record_id: recording.sid) %>">
             <text id='recording-text'>
-                <%= recording.track_name %>
+                <%= recording["title"] %>
             </text>
             <a><i id="edit-record" class="fa fa-edit align-top ml-2" data-edit-recordid="<%= recording.sid %>"></i></a>
         </div>
         <div class="small text-muted">
-            <%= t("recording.recorded_on", date: recording_date(recording.date_created)) %>
+            <%= t("recording.recorded_on", date: recording_date(recording['transcription_confirmation_time'])) %>
         </div>
     </td>
     <% if recording_thumbnails? %>
@@ -30,14 +30,13 @@
     </td>
     <% end %>
     <td id="recording-length" class="text-left">
-        <%= recording.duration %>
+        <%= recording['duration'] %>
     </td>
     <td id="recording-users" class="text-left">
-        <%= recording.grouping_sids || "-" %>
+        <%= recording['speaker_map'].keys || "-" %>
     </td>
     <td class="text-left">
     </td>
     <td class="text-center">
-        <% recording.codec %>
     </td>
 </tr>
