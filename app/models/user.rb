@@ -261,7 +261,7 @@ class User < ApplicationRecord
 
     room = Room.create!(owner: self, name: I18n.t("home_room"))
 
-    default_org_id = Rails.configuration.reduct_org_id
+    default_org_id = Rails.configuration.reduct_default_org_id
 
     update_attributes(uid: id, main_room: room, org: default_org_id)
 
