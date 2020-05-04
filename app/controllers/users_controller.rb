@@ -204,7 +204,7 @@ class UsersController < ApplicationController
 
   def user_params
     params.require(:user).permit(:name, :email, :image, :password, :password_confirmation,
-      :new_password, :provider, :accepted_terms, :language, :user_uid)
+      :new_password, :provider, :accepted_terms, :language, :user_uid, :org, :calendly_tokek)
   end
 
   def send_registration_email

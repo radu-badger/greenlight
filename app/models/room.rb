@@ -99,7 +99,9 @@ class Room < ApplicationRecord
   end
 
   def create_reduct_project
-    reduct_put_project(bbb_id, owner.org, name, [owner.email])
+    org = owner.org.empty? ? Rails.configuration.reduct_default_org_id : owner.org
+
+    reduct_put_project(bbb_id, org, name, [owner.email])
   end
 
   # Generates a three character uid chunk.

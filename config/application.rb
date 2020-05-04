@@ -73,7 +73,7 @@ module Greenlight
     config.twilio_video_resource_base = ENV["TWILIO_VIDEO_RESOURCE_BASE"] || 'https://video.twilio.com'
 
     config.reduct_endpoint = ENV["REDUCT_ENDPOINT"] || 'https://dev.distill.video'
-    config.reduct_org_id   = ENV["REDUCT_ORG_ID"] || 'f475a5794d'
+    config.reduct_default_org_id = ENV["REDUCT_DEFAULT_ORG_ID"] || 'f475a5794d'
     config.reduct_api_token_account = ENV["REDUCT_API_TOKEN_ACCOUNT"] || "radu@raduta.net"
 
     if config.loadbalanced_configuration
