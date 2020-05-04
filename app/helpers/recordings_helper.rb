@@ -19,7 +19,7 @@
 module RecordingsHelper
   # Helper for converting BigBlueButton dates into the desired format.
   def recording_date(date)
-    I18n.l date, format: "%B %d, %Y"
+    I18n.l DateTime.parse(date), format: "%B %d, %Y"
   end
 
   # Prevents single images from erroring when not passed as an array.
