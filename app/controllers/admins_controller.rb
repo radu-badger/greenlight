@@ -101,6 +101,7 @@ class AdminsController < ApplicationController
     @user.remove_role :pending
 
     reduct_create_user(@user.email)
+    reduct_add_user_to_project(@user.email, @user.org)
 
     send_user_approved_email(@user)
 

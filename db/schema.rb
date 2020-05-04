@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 # This file is auto-generated from the current state of the database. Instead
 # of editing this file, please use the migrations feature of Active Record to
 # incrementally modify your database, and then regenerate this schema definition.
@@ -12,7 +10,8 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20_200_502_171_646) do
+ActiveRecord::Schema.define(version: 2020_05_04_062649) do
+
   create_table "features", force: :cascade do |t|
     t.integer "setting_id"
     t.string "name", null: false
@@ -57,9 +56,9 @@ ActiveRecord::Schema.define(version: 20_200_502_171_646) do
     t.string "provider"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index %w[name provider], name: "index_roles_on_name_and_provider", unique: true
+    t.index ["name", "provider"], name: "index_roles_on_name_and_provider", unique: true
     t.index ["name"], name: "index_roles_on_name"
-    t.index %w[priority provider], name: "index_roles_on_priority_and_provider", unique: true
+    t.index ["priority", "provider"], name: "index_roles_on_priority_and_provider", unique: true
   end
 
   create_table "rooms", force: :cascade do |t|
@@ -123,6 +122,7 @@ ActiveRecord::Schema.define(version: 20_200_502_171_646) do
     t.boolean "deleted", default: false, null: false
     t.string "calendly_token"
     t.string "reduct_project_id"
+    t.string "org"
     t.index ["created_at"], name: "index_users_on_created_at"
     t.index ["deleted"], name: "index_users_on_deleted"
     t.index ["email"], name: "index_users_on_email"
@@ -135,7 +135,8 @@ ActiveRecord::Schema.define(version: 20_200_502_171_646) do
     t.integer "user_id"
     t.integer "role_id"
     t.index ["role_id"], name: "index_users_roles_on_role_id"
-    t.index %w[user_id role_id], name: "index_users_roles_on_user_id_and_role_id"
+    t.index ["user_id", "role_id"], name: "index_users_roles_on_user_id_and_role_id"
     t.index ["user_id"], name: "index_users_roles_on_user_id"
   end
+
 end

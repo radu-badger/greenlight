@@ -22,9 +22,10 @@ module Recorder
 
   # Fetches all recordings for a room.
   def recordings(uid, search_params = {}, ret_search_params = false)
-    res = get_recordings(uid)
+    recs = get_recordings(uid)
+    logger.info("Recorder recs: #{recs}")
 
-    format_recordings(res, search_params, ret_search_params)
+    format_recordings(recs, search_params, ret_search_params)
   end
 
   # Fetches a rooms public recordings.

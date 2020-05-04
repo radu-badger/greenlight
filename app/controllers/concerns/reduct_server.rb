@@ -73,16 +73,13 @@ module ReductServer
     end
   end
 
-  def get_sessions(uid)
-    twilio_client.video.rooms.list(unique_name: uid, status: 'completed')
-  end
-
   def get_recordings(uid)
-    sessions = get_sessions(uid)
+    sessions = reduct_project_docs(uid)
 
-    sessions.flat_map do |session|
-      twilio_client.video.recordings.list(grouping_sid: session.sid)
-    end
+    logger.info("Docs for project #{uid}: ")
+    logger.info(" ---->  #{sessions}")
+
+    sessions
   end
 
   # Gets the number of recordings for this room

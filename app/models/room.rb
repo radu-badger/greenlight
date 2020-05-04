@@ -99,7 +99,7 @@ class Room < ApplicationRecord
   end
 
   def create_reduct_project
-    reduct_put_project(bbb_id, name, [owner.email])
+    reduct_put_project(bbb_id, owner.org, name, [owner.email])
   end
 
   # Generates a three character uid chunk.

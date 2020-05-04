@@ -73,9 +73,11 @@ class RoomsController < ApplicationController
       if current_user.highest_priority_role.get_permission("can_create_rooms")
         # User is allowed to have rooms
         @search, @order_column, @order_direction, recs =
-          recordings(@room.uid, params.permit(:search, :column, :direction), true)
+          recordings(@room.bbb_id, params.permit(:search, :column, :direction), true)
 
         @user_list = shared_user_list if shared_access_allowed
+
+        logger.info("Recs in rooms#show: #{recs}")
 
         @pagy, @recordings = pagy_array(recs)
       else

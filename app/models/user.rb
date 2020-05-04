@@ -261,7 +261,9 @@ class User < ApplicationRecord
 
     room = Room.create!(owner: self, name: I18n.t("home_room"))
 
-    update_attributes(uid: id, main_room: room)
+    default_org_id = Rails.configuration.reduct_org_id
+
+    update_attributes(uid: id, main_room: room, org: default_org_id)
 
     # Initialize the user to use the default user role
     role_provider = Rails.configuration.loadbalanced_configuration ? provider : "greenlight"

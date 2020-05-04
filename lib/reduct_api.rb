@@ -22,17 +22,35 @@ module ReductApi
     req['x-using-reduct-fetch'] = 'true'
     req['cookie'] = "token=#{api_token}"
 
-    req.body = content.to_json
-
-    logger.info("Reduct GET: #{req.uri}, #{req.body}")
+    logger.info("Reduct GET: #{req.uri}")
 
     reduct_http do |http|
-      http.get(req)
+      res = http.request(req)
+      return res.body
     end
   end
 
   def reduct_userdb
     JSON.parse(reduct_get('userdb'))
+  end
+
+  def reduct_project(project_id)
+    reduct_userdb['db']['project'][project_id]
+  end
+
+  def reduct_doc(doc_id)
+    reduct_userdb['db']['doc'][doc_id]
+  end
+
+  def reduct_project_docs(project_id)
+    recs = reduct_userdb['db']['doc'].select do |doc_id, content|
+      { doc_id => content } if content['project'] == project_id
+    end
+
+    recs.collect do |doc_id, content|
+      content['doc_id'] = doc_id
+      content
+    end 
   end
 
   def reduct_post(cmd, content)
@@ -84,11 +102,11 @@ module ReductApi
     end
   end
 
-  def reduct_put_project(project_id, title, editors, org_editable = false)
+  def reduct_put_project(project_id, org_id, title, editors, org_editable = false)
     project = {
       title: title,
-      organization: Rails.configuration.reduct_org_id,
-      editors: [Rails.configuration.reduct_master_account] + editors,
+      organization: org_id,
+      editors: [Rails.configuration.reduct_api_token_account] + editors,
       org_editable: org_editable
     }
 
@@ -126,6 +144,21 @@ module ReductApi
       logger.info("Sending create user command: #{create_user_cmd}")
 
       res = http.request(create_user_cmd)
+
+      logger.info("REDUCT response #{res.code}, #{res.message}")
+    end
+  end
+
+  def reduct_add_user_to_project(email, _org)
+    userdb = reduct_userdb
+    orgdb = userdb['org'][orgid]
+
+    guests = orgdb['guests'] + email
+
+    org_guests_cmd = reduct_userlog('put', ['org', org, 'guests'], guests)
+
+    reduct_http do |http|
+      res = http.request(org_guests_cmd)
 
       logger.info("REDUCT response #{res.code}, #{res.message}")
     end
