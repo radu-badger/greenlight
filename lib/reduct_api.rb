@@ -7,10 +7,6 @@ module ReductApi
   class LoginError < StandardError
   end
 
-  def reduct_doc_link(project, doc)
-    URI.parse(Rails.configuration.reduct_endpoint).merge('p', project, 'interview', doc)
-  end
-
   def reduct_uri(cmd = '')
     URI.parse(Rails.configuration.reduct_endpoint).merge(cmd)
   end

@@ -22,6 +22,10 @@ module RecordingsHelper
     I18n.l date, format: "%B %d, %Y"
   end
 
+  def reduct_doc_link(project, doc)
+    URI.parse(Rails.configuration.reduct_endpoint).merge('p', project, 'interview', doc)
+  end
+
   # Prevents single images from erroring when not passed as an array.
   def safe_recording_images(images)
     Array.wrap(images)
