@@ -85,7 +85,6 @@ class Room < ApplicationRecord
 
   private
 
-  # Generates a uid for the room and BigBlueButton.
   def setup
     self.uid = random_room_uid
 
@@ -99,7 +98,7 @@ class Room < ApplicationRecord
   end
 
   def create_reduct_project
-    org = owner.org.empty? ? Rails.configuration.reduct_default_org_id : owner.org
+    self.org = owner.org.empty? ? Rails.configuration.reduct_default_org_id : owner.org
 
     reduct_put_project(bbb_id, org, name, [owner.email])
   end

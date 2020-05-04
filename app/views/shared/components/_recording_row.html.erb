@@ -15,7 +15,8 @@
 
 <tr>
     <td>
-        <%= recording["title"] %>
+
+        <%= link_to recording["title"], reduct_doc_link(recording['project'], recording['doc_id']) %>
         <div class="small text-muted">
             <%= t("recording.recorded_on", date: recording_date(DateTime.parse(recording['transcription_confirmation_time']))) %>
         </div>
