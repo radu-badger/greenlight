@@ -98,7 +98,7 @@ class Room < ApplicationRecord
   end
 
   def create_reduct_project
-    self.org = owner.org.empty? ? Rails.configuration.reduct_default_org_id : owner.org
+    self.org = owner.org ? Rails.configuration.reduct_default_org_id : owner.org
 
     reduct_put_project(bbb_id, org, name, [owner.email])
   end
