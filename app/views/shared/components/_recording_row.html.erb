@@ -17,7 +17,7 @@
     <td>
         <%= recording["title"] %>
         <div class="small text-muted">
-            <%= t("recording.recorded_on", date: recording_date(recording['transcription_confirmation_time'])) %>
+            <%= t("recording.recorded_on", date: recording_date(DateTime.parse(recording['transcription_confirmation_time']))) %>
         </div>
     </td>
     <% if recording_thumbnails? %>
