@@ -23,7 +23,7 @@ module RecordingsHelper
   end
 
   def reduct_doc_link(project, doc)
-    URI.parse(Rails.configuration.reduct_endpoint).merge('p', project, 'interview', doc)
+    URI.join(Rails.configuration.reduct_endpoint, 'p', project, 'interview', doc)
   end
 
   # Prevents single images from erroring when not passed as an array.
